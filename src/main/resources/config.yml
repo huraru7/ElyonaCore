@@ -1,0 +1,38 @@
+# データベース設定
+database:
+  type: sqlite # sqlite または mysql
+  sqlite:
+    file: elyona_data.db
+  mysql:
+    host: localhost
+    port: 3306
+    database: elyona
+    username: root
+    password: ""
+
+# 経済設定
+economy:
+  currency_name: "Cred"
+  currency_symbol: "Cr"
+  initial_grant: 500
+  transaction_tax: 0.05
+
+# ランク設定
+rank:
+  exp_requirements:
+    SILVER: 1000
+    GOLD: 3000
+    PLATINUM: 7000
+    DIAMOND: 15000
+    LEGEND: 30000
+  rankup_rewards:
+    SILVER: 500
+    GOLD: 1500
+    PLATINUM: 3000
+    DIAMOND: 6000
+    LEGEND: 15000
+
+# MIMICメッセージ設定
+mimic:
+  prefix_color: "#7F77DD"
+  text_color: "#D3D1C7"

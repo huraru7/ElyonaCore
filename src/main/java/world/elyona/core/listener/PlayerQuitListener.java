@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import world.elyona.core.economy.EconomyCache;
 import world.elyona.core.player.PlayerDataManager;
 import world.elyona.core.rank.SeasonManager;
 import world.elyona.core.title.TitleManager;
@@ -12,19 +11,14 @@ import world.elyona.core.title.TitleManager;
 public class PlayerQuitListener implements Listener {
 
     private final PlayerDataManager playerDataManager;
-    private final EconomyCache economyCache;
 
-    public PlayerQuitListener(PlayerDataManager playerDataManager, EconomyCache economyCache) {
+    public PlayerQuitListener(PlayerDataManager playerDataManager) {
         this.playerDataManager = playerDataManager;
-        this.economyCache = economyCache;
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-
-        // 残高をDBに書き込む
-        economyCache.flush(player.getUniqueId());
 
         // プレイヤーデータ更新・キャッシュ削除
         playerDataManager.onQuit(player.getUniqueId());

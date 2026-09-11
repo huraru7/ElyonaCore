@@ -1,6 +1,7 @@
 plugins {
     java
     id("io.papermc.paperweight.userdev") version "1.7.1"
+    id("com.gradleup.shadow") version "8.3.5"
 }
 
 group = "world.elyona"
@@ -14,9 +15,6 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7") {
-        exclude(group = "org.bukkit", module = "bukkit")
-    }
     compileOnly("net.luckperms:api:5.4")
     // HikariCP (SQLite/MySQL 接続プール)
     implementation("com.zaxxer:HikariCP:5.1.0")
@@ -29,8 +27,15 @@ java {
 }
 
 tasks {
+    // HikariCP・sqlite-jdbc(implementation依存)をshadowJarで同梱してから難読化する
     assemble {
         dependsOn(reobfJar)
+    }
+    reobfJar {
+        inputJar.set(shadowJar.flatMap { it.archiveFile })
+    }
+    shadowJar {
+        archiveClassifier.set("shadow")
     }
     compileJava {
         options.encoding = "UTF-8"

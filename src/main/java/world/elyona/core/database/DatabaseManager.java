@@ -55,20 +55,13 @@ public class DatabaseManager {
     private void createTables() {
         boolean mysql = config.isMySql();
         String autoInc = mysql ? "INT AUTO_INCREMENT" : "INTEGER";
-        String boolType = mysql ? "TINYINT(1)" : "BOOLEAN";
 
         String[] sqls = {
             "CREATE TABLE IF NOT EXISTS elyona_players (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
                 "name VARCHAR(16) NOT NULL," +
                 "first_join TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                "last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                "initial_grant_done " + boolType + " DEFAULT 0" +
-            ")",
-            "CREATE TABLE IF NOT EXISTS elyona_economy (" +
-                "uuid VARCHAR(36) PRIMARY KEY," +
-                "balance BIGINT DEFAULT 0," +
-                "FOREIGN KEY (uuid) REFERENCES elyona_players(uuid)" +
+                "last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
             ")",
             "CREATE TABLE IF NOT EXISTS elyona_titles (" +
                 "uuid VARCHAR(36) NOT NULL," +
@@ -114,23 +107,15 @@ public class DatabaseManager {
     private void insertServerAccount() {
         String serverUuid = "00000000-0000-0000-0000-000000000000";
         String insertPlayer = config.isMySql()
-                ? "INSERT IGNORE INTO elyona_players (uuid, name, initial_grant_done) VALUES (?, 'SERVER', 1)"
-                : "INSERT OR IGNORE INTO elyona_players (uuid, name, initial_grant_done) VALUES (?, 'SERVER', 1)";
-        String insertEconomy = config.isMySql()
-                ? "INSERT IGNORE INTO elyona_economy (uuid, balance) VALUES (?, 0)"
-                : "INSERT OR IGNORE INTO elyona_economy (uuid, balance) VALUES (?, 0)";
+                ? "INSERT IGNORE INTO elyona_players (uuid, name) VALUES (?, 'SERVER')"
+                : "INSERT OR IGNORE INTO elyona_players (uuid, name) VALUES (?, 'SERVER')";
 
-        try (Connection conn = dataSource.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(insertPlayer)) {
-                ps.setString(1, serverUuid);
-                ps.executeUpdate();
-            }
-            try (PreparedStatement ps = conn.prepareStatement(insertEconomy)) {
-                ps.setString(1, serverUuid);
-                ps.executeUpdate();
-            }
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(insertPlayer)) {
+            ps.setString(1, serverUuid);
+            ps.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().warning("サーバー口座の挿入に失敗しました: " + e.getMessage());
+            plugin.getLogger().warning("サーバー口座（プレイヤーレコード）の挿入に失敗しました: " + e.getMessage());
         }
     }
 

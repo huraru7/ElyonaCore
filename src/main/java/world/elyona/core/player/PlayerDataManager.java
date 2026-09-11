@@ -41,23 +41,9 @@ public class PlayerDataManager {
         repository.updateLastSeen(uuid);
     }
 
-    /** 初回付与フラグを立てる（DBとキャッシュ両方更新） */
-    public void markInitialGrantDone(UUID uuid) {
-        repository.markInitialGrantDone(uuid);
-        PlayerRepository.PlayerRecord old = cache.get(uuid);
-        if (old != null) {
-            cache.put(uuid, new PlayerRepository.PlayerRecord(old.uuid(), old.name(), true));
-        }
-    }
-
     /** キャッシュから PlayerRecord 取得 */
     public PlayerRepository.PlayerRecord getCached(UUID uuid) {
         return cache.get(uuid);
-    }
-
-    public boolean isInitialGrantDone(UUID uuid) {
-        PlayerRepository.PlayerRecord r = cache.get(uuid);
-        return r != null && r.initialGrantDone();
     }
 
     public void saveLastSeen(UUID uuid) {

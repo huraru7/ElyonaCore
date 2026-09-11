@@ -3,7 +3,6 @@ package world.elyona.core.rank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import world.elyona.core.ElyonaCorePlugin;
-import world.elyona.core.economy.EconomyCache;
 import world.elyona.core.event.ElyonaRankUpEvent;
 
 public class RankManager {
@@ -11,14 +10,12 @@ public class RankManager {
     private final ElyonaCorePlugin plugin;
     private final RankRepository repository;
     private final SeasonManager seasonManager;
-    private final EconomyCache economyCache;
 
     public RankManager(ElyonaCorePlugin plugin, RankRepository repository,
-                       SeasonManager seasonManager, EconomyCache economyCache) {
+                       SeasonManager seasonManager) {
         this.plugin = plugin;
         this.repository = repository;
         this.seasonManager = seasonManager;
-        this.economyCache = economyCache;
     }
 
     /**

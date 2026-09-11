@@ -16,12 +16,6 @@ public class PluginConfig {
     private String mysqlUsername;
     private String mysqlPassword;
 
-    // Economy
-    private String currencyName;
-    private String currencySymbol;
-    private long initialGrant;
-    private double transactionTax;
-
     // MIMIC
     private String mimicPrefixColor;
     private String mimicTextColor;
@@ -44,11 +38,6 @@ public class PluginConfig {
         mysqlUsername = cfg.getString("database.mysql.username", "root");
         mysqlPassword = cfg.getString("database.mysql.password", "");
 
-        currencyName = cfg.getString("economy.currency_name", "Cred");
-        currencySymbol = cfg.getString("economy.currency_symbol", "Cr");
-        initialGrant = cfg.getLong("economy.initial_grant", 500L);
-        transactionTax = cfg.getDouble("economy.transaction_tax", 0.05);
-
         mimicPrefixColor = cfg.getString("mimic.prefix_color", "#7F77DD");
         mimicTextColor = cfg.getString("mimic.text_color", "#D3D1C7");
     }
@@ -63,10 +52,6 @@ public class PluginConfig {
     public String getMysqlDatabase() { return mysqlDatabase; }
     public String getMysqlUsername() { return mysqlUsername; }
     public String getMysqlPassword() { return mysqlPassword; }
-    public String getCurrencyName() { return currencyName; }
-    public String getCurrencySymbol() { return currencySymbol; }
-    public long getInitialGrant() { return initialGrant; }
-    public double getTransactionTax() { return transactionTax; }
     public String getMimicPrefixColor() { return mimicPrefixColor; }
     public String getMimicTextColor() { return mimicTextColor; }
 }

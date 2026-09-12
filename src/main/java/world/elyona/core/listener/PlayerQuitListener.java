@@ -5,8 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import world.elyona.core.player.PlayerDataManager;
-import world.elyona.core.rank.SeasonManager;
-import world.elyona.core.title.TitleManager;
 
 public class PlayerQuitListener implements Listener {
 
@@ -21,13 +19,7 @@ public class PlayerQuitListener implements Listener {
         Player player = event.getPlayer();
 
         // プレイヤーデータ更新・キャッシュ削除
+        // ランク・称号データの保存はElyonaRank側が独立してPlayerQuitEventを購読する（ドメイン分割）
         playerDataManager.onQuit(player.getUniqueId());
-
-        // ランクをDBに書き込む（SeasonManagerはElyonaCorePluginから取得）
-        world.elyona.core.ElyonaCorePlugin plugin = world.elyona.core.ElyonaCorePlugin.getInstance();
-        plugin.getSeasonManager().saveAndRemoveRank(player.getUniqueId());
-
-        // 称号キャッシュ削除
-        plugin.getTitleManager().unloadActiveTitle(player.getUniqueId());
     }
 }

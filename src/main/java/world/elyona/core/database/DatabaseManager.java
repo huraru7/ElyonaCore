@@ -53,42 +53,13 @@ public class DatabaseManager {
     }
 
     private void createTables() {
-        boolean mysql = config.isMySql();
-        String autoInc = mysql ? "INT AUTO_INCREMENT" : "INTEGER";
-
+        // elyona_titles/elyona_active_title/elyona_seasons/elyona_ranksはElyonaRankプラグインが所有する（ドメイン分割）
         String[] sqls = {
             "CREATE TABLE IF NOT EXISTS elyona_players (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
                 "name VARCHAR(16) NOT NULL," +
                 "first_join TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                 "last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-            ")",
-            "CREATE TABLE IF NOT EXISTS elyona_titles (" +
-                "uuid VARCHAR(36) NOT NULL," +
-                "title_id VARCHAR(64) NOT NULL," +
-                "obtained_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                "PRIMARY KEY (uuid, title_id)," +
-                "FOREIGN KEY (uuid) REFERENCES elyona_players(uuid)" +
-            ")",
-            "CREATE TABLE IF NOT EXISTS elyona_active_title (" +
-                "uuid VARCHAR(36) PRIMARY KEY," +
-                "title_id VARCHAR(64)," +
-                "FOREIGN KEY (uuid) REFERENCES elyona_players(uuid)" +
-            ")",
-            "CREATE TABLE IF NOT EXISTS elyona_seasons (" +
-                "season_id " + autoInc + " PRIMARY KEY," +
-                "name VARCHAR(64) NOT NULL," +
-                "started_at TIMESTAMP NOT NULL," +
-                "ended_at TIMESTAMP" +
-            ")",
-            "CREATE TABLE IF NOT EXISTS elyona_ranks (" +
-                "uuid VARCHAR(36) NOT NULL," +
-                "season_id INT NOT NULL," +
-                "rank_tier VARCHAR(16) DEFAULT 'BRONZE'," +
-                "exp_total BIGINT DEFAULT 0," +
-                "PRIMARY KEY (uuid, season_id)," +
-                "FOREIGN KEY (uuid) REFERENCES elyona_players(uuid)," +
-                "FOREIGN KEY (season_id) REFERENCES elyona_seasons(season_id)" +
             ")"
         };
 
